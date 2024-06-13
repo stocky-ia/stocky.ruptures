@@ -1,0 +1,51 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Import {
+  id: ID!
+  tenantId: String!
+  createdAt: DateTime!
+  updatedAt: DateTime
+  usrCreate: String!
+  usrUpdate: String!
+  status: EStatus!
+  type: EImportType!
+  filekey: String!
+  filename: String!
+  filesize: Float!
+  fileExtension: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+enum EStatus {
+  WAITING
+  PROCESSING
+}
+
+enum EImportType {
+  SELLER
+  PRODUCT
+  STOCK
+  ORDER
+}
+
+type Query {
+  getImportById(id: String!): Import!
+  queryImports(query: QueryImportsDto!): [Import!]!
+}
+
+input QueryImportsDto {
+  status: EStatus
+  type: EImportType
+  filename: String
+  usrCreate: String
+  page: Float
+  limit: Float
+  sortBy: String
+  order: String
+}
