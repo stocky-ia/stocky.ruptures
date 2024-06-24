@@ -1,20 +1,33 @@
 import { Injectable } from '@nestjs/common';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { v4 as uuidv4 } from 'uuid';
-import * as fs from 'fs';
 
 @Injectable()
 export class UploadFileToS3UseCase {
+  private s3Client: S3Client;
+
+  constructor() {
+    this.s3Client = new S3Client({
+      region: process.env.AWS_REGION,
+      credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      },
+    });
+  }
+
   async execute(file: Express.Multer.File): Promise<string> {
-    const s3 = new S3Client({ region: 'your-region' });
     const fileKey = `${uuidv4()}-${file.originalname}`;
     const params = {
-      Bucket: 'your-bucket-name',
+      Bucket: process.env.AWS_S3_BUCKET_NAME,
       Key: fileKey,
-      Body: fs.createReadStream(file.path),
+      Body: file.buffer,
+      ContentType: file.mimetype,
     };
 
-    await s3.send(new PutObjectCommand(params));
+    const command = new PutObjectCommand(params);
+    await this.s3Client.send(command);
+
     return fileKey;
   }
 }

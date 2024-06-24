@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Import } from 'src/core/entities/import.entity';
-import { QueryImportsDto } from 'src/core/dtos/query-imports.dto';
+import { Import } from '../entities/import.entity';
+import { QueryImportsDto } from '../dtos/query-imports.dto';
+
 
 @Injectable()
 export class QueryImportsUseCase {

@@ -1,7 +1,8 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { ApiProperty } from '@nestjs/swagger';
-import { EStatus } from 'src/core/enums/status.enum';
-import { EImportType } from 'src/core/enums/import-type.enum';
+import { EStatus } from '../enums/status.enum';
+import { EImportType } from '../enums/import-type.enum';
+
 
 @InputType()
 export class QueryImportsDto {

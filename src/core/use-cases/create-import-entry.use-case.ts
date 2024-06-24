@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Import } from 'src/core/entities/import.entity';
+import { Import } from '../entities/import.entity';
+
 
 @Injectable()
 export class CreateImportEntryUseCase {

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { EImportType } from 'src/core/enums/import-type.enum';
+import { EImportType } from '../enums/import-type.enum';
 
 export class CreateImportDto {
   @ApiProperty({ description: 'Type of import', enum: EImportType })

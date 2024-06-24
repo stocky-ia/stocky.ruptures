@@ -1,8 +1,9 @@
 import { Entity, Column } from 'typeorm';
 import { ObjectType, Field } from '@nestjs/graphql';
-import { BaseEntity } from 'src/commons/entity.base';
-import { EImportType } from 'src/core/enums/import-type.enum';
-import { EStatus } from 'src/core/enums/status.enum';
+import { BaseEntity } from '../../commons/entity.base';
+import { EStatus } from '../enums/status.enum';
+import { EImportType } from '../enums/import-type.enum';
+
 
 @ObjectType()
 @Entity('imports')

@@ -1,8 +1,8 @@
 import { Resolver, Query, Args } from '@nestjs/graphql';
-import { GetImportByIdUseCase } from 'src/core/use-cases/get-import-by-id.use-case';
-import { QueryImportsUseCase } from 'src/core/use-cases/query-imports.use-case';
-import { Import } from 'src/core/entities/import.entity';
-import { QueryImportsDto } from 'src/core/dtos/query-imports.dto';
+import { GetImportByIdUseCase } from '../../core/use-cases/get-import-by-id.use-case';
+import { QueryImportsUseCase } from '../../core/use-cases/query-imports.use-case';
+import { Import } from '../../core/entities/import.entity';
+import { QueryImportsDto } from '../../core/dtos/query-imports.dto';
 
 @Resolver(of => Import)
 export class ImportResolver {

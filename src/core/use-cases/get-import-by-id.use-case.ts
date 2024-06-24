@@ -1,7 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ObjectId, Repository } from 'typeorm';
-import { Import } from 'src/core/entities/import.entity';
+import { Repository } from 'typeorm';
+import { Import } from '../../core/entities/import.entity';
+import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class GetImportByIdUseCase {

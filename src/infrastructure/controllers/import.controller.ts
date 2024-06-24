@@ -1,11 +1,11 @@
 import { Controller, Post, UploadedFile, UseInterceptors, Body } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ImportService } from 'src/infrastructure/services/import.service';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { ApiTags, ApiConsumes, ApiBody, ApiOperation } from '@nestjs/swagger';
-import { CreateImportDto } from 'src/core/dtos/create-import.dto';
-import { UploadImportDto } from 'src/core/dtos/upload-import.dto';
+import { ImportService } from '../services/import.service';
+import { UploadImportDto } from '../../core/dtos/upload-import.dto';
+import { CreateImportDto } from '../../core/dtos/create-import.dto';
 
 @ApiTags('import')
 @Controller('import')
