@@ -45,7 +45,7 @@ jobs:
       uses: aws-actions/amazon-ecs-register-task-definition@v1
       with:
         family: stocky-rupturas
-        task-definition: task-def.json
+        task-definition: task-definition.json
 
     - name: Deploy to Amazon ECS
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
