@@ -30,15 +30,27 @@ jobs:
         ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
         IMAGE_TAG: latest
       run: |
-        # Build Docker image
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-        # Push Docker image to Amazon ECR
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+    - name: Create ECS task definition
+      id: task-def
+      run: |
+        task_template=$(cat task-definition.json)
+        task_def=$(echo "$task_template" | jq --arg IMAGE "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" '.containerDefinitions[0].image=$IMAGE')
+        echo "$task_def" > task-def.json
+
+    - name: Register ECS task definition
+      id: register-task-def
+      uses: aws-actions/amazon-ecs-register-task-definition@v1
+      with:
+        family: stocky-rupturas
+        task-definition: task-def.json
 
     - name: Deploy to Amazon ECS
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
         cluster: ${{ secrets.ECS_CLUSTER }}
         service: ${{ secrets.ECS_SERVICE }}
-        file: task-definition.json
+        task-definition: stocky-rupturas
         force-new-deployment: true
