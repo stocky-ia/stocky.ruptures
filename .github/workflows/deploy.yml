@@ -39,21 +39,21 @@ jobs:
         task_template=$(cat task-definition.json)
         task_def=$(echo "$task_template" | jq --arg IMAGE "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" '.containerDefinitions[0].image=$IMAGE')
         echo "$task_def" > task-def.json
+        echo "Contents of task-def.json:"
         cat task-def.json
       shell: bash
 
     - name: List files for debugging
-      run: ls -al
+      run: |
+        echo "Listing files in current directory:"
+        ls -al
       shell: bash
 
     - name: Register task definition
       id: register-task-def
       run: |
         echo "Registering task definition..."
-        cat task-def.json
-        aws ecs register-task-definition \
-          --cli-input-json file://task-def.json \
-          --region ${{ secrets.AWS_REGION }}
+        cat task-def.json | aws ecs register-task-definition --cli-input-json file:///dev/stdin --region ${{ secrets.AWS_REGION }}
       shell: bash
 
     - name: Deploy to Amazon ECS
