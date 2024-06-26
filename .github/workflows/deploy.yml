@@ -33,19 +33,21 @@ jobs:
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
-    - name: Create ECS task definition
+    - name: Create task definition
       id: task-def
       run: |
         task_template=$(cat task-definition.json)
         task_def=$(echo "$task_template" | jq --arg IMAGE "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" '.containerDefinitions[0].image=$IMAGE')
         echo "$task_def" > task-def.json
+      shell: bash
 
-    - name: Register ECS task definition
+    - name: Register task definition
       id: register-task-def
-      uses: aws-actions/amazon-ecs-register-task-definition@v1
-      with:
-        family: stocky-rupturas
-        task-definition: task-definition.json
+      run: |
+        aws ecs register-task-definition \
+          --cli-input-json file://task-def.json \
+          --region ${{ secrets.AWS_REGION }}
+      shell: bash
 
     - name: Deploy to Amazon ECS
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
