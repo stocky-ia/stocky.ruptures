@@ -61,5 +61,5 @@ jobs:
       with:
         cluster: ${{ secrets.ECS_CLUSTER }}
         service: ${{ secrets.ECS_SERVICE }}
-        task-definition: my-task-family
+        task-definition: stocky-rupturas
         force-new-deployment: true
