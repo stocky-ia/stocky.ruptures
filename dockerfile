@@ -21,6 +21,7 @@ EXPOSE 3000
 
 # Defina a variável de ambiente para a produção
 ENV NODE_ENV=production
+ENV MONGODB_URI=mongodb+srv://denis:010203@stocky-rupturas.vytqmpc.mongodb.net/ruptures?retryWrites=true&w=majority
 
 # Comando para iniciar a aplicação
 CMD ["npm", "run", "start:prod"]

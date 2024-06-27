@@ -1,4 +1,4 @@
-import { Controller, Post, UploadedFile, UseInterceptors, Body } from '@nestjs/common';
+import { Controller, Post, UploadedFile, UseInterceptors, Body, Get } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
@@ -11,6 +11,14 @@ import { CreateImportDto } from '../../core/dtos/create-import.dto';
 @Controller('import')
 export class ImportController {
   constructor(private readonly importService: ImportService) {}
+
+  @Get('health')
+  checkHealth() {
+    return {
+      status: 'ok',
+      timestamp: new Date().toISOString(),
+    };
+  }
 
   @Post('upload')
   @ApiOperation({ summary: 'Upload a CSV file' })
