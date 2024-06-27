@@ -10,37 +10,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
+    - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.5.3
       with:
-        node-version: '14'
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-    - name: Install dependencies
-      run: npm install
-
-    - name: Build the project
-      run: npm run build
-
-    - name: Save SSH key to file
+    - name: Copy files to EC2
       run: |
-        echo "${{ secrets.EC2_SSH_KEY }}" > /tmp/ssh_key.pem
-        chmod 600 /tmp/ssh_key.pem
+        scp -o StrictHostKeyChecking=no -r ./* ec2-user@${{ secrets.EC2_HOST }}:~/app
 
-    - name: Copy files via sftp
+    - name: SSH into EC2 and run Docker commands
       run: |
-        sftp -i /tmp/ssh_key.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} <<EOF
-        put -r . /home/ubuntu/app
-        EOF
-
-    - name: Add SSH key and execute remote commands
-      run: |
-        eval "$(ssh-agent -s)"
-        ssh-add /tmp/ssh_key.pem
-        ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} <<EOF
-        cd /home/ubuntu/app
-        docker-compose down
-        docker-compose up -d --build
+        ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
+          cd ~/app
+          docker-compose down
+          docker-compose up -d --build
         EOF
