@@ -35,13 +35,12 @@ jobs:
         put -r . /home/ubuntu/app
         EOF
 
-    - name: Execute remote commands via SSH
-      uses: appleboy/ssh-action@v0.1.3
-      with:
-        host: ${{ secrets.EC2_HOST }}
-        username: ${{ secrets.EC2_USER }}
-        key: /tmp/ssh_key.pem
-        script: |
-          cd /home/ubuntu/app
-          docker-compose down
-          docker-compose up -d --build
+    - name: Add SSH key and execute remote commands
+      run: |
+        eval "$(ssh-agent -s)"
+        ssh-add /tmp/ssh_key.pem
+        ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} <<EOF
+        cd /home/ubuntu/app
+        docker-compose down
+        docker-compose up -d --build
+        EOF
