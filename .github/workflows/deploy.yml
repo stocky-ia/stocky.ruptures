@@ -22,6 +22,14 @@ jobs:
       run: |
         ssh -o StrictHostKeyChecking=no -t ec2-user@${{ secrets.EC2_HOST }} "mkdir -p ~/app"
 
+    - name: Create .env file
+      run: |
+        echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" > .env
+        echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> .env
+        echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
+        echo "AWS_REGION=${{ secrets.AWS_REGION }}" > .env
+        echo "AWS_S3_BUCKET_NAME=${{ secrets.AWS_S3_BUCKET_NAME }}" >> .env
+        
     - name: Copy files to EC2
       run: |
         scp -o StrictHostKeyChecking=no -r ./* ec2-user@${{ secrets.EC2_HOST }}:~/app
@@ -51,3 +59,7 @@ jobs:
           docker-compose down
           docker-compose up -d --build
         EOF
+
+    - name: Clean up .env file
+      run: |
+        ssh -o StrictHostKeyChecking=no -t ec2-user@${{ secrets.EC2_HOST }} "rm ~/app/.env"
