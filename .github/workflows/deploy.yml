@@ -24,6 +24,8 @@ jobs:
 
     - name: Create .env file
       run: |
+        echo "Starting the script..."
+        echo ${{ secrets.MONGODB_URI }}
         echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" > .env
         echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> .env
         echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
