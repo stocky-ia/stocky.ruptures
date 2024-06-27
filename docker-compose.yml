@@ -1,7 +1,5 @@
 services:
   app:
-    build:
-      context: .
     ports:
       - '27010:27010'
     environment:
