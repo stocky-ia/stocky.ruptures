@@ -1,24 +1,99 @@
 {
-    "family": "stocky-rupturas",
-    "networkMode": "bridge",
+    "taskDefinitionArn": "arn:aws:ecs:us-east-1:381492238900:task-definition/stocky-rupturas:16",
     "containerDefinitions": [
         {
-            "name": "stocky-rupturas-container",
-            "image": "381492238900.dkr.ecr.us-east-1.amazonaws.com/stocky-rupturas",
-            "memory": 512,
-            "cpu": 256,
-            "essential": true,
+            "name": "stocky-rupturas",
+            "image": "381492238900.dkr.ecr.us-east-1.amazonaws.com/stocky-rupturas:latest",
+            "cpu": 1024,
+            "memoryReservation": 512,
             "portMappings": [
                 {
-                    "containerPort": 80,
-                    "hostPort": 80
+                    "name": "stocky-rupturas-3000-tcp",
+                    "containerPort": 3000,
+                    "hostPort": 3000,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
                 }
-            ]
+            ],
+            "essential": true,
+            "environment": [],
+            "environmentFiles": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "ulimits": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/stocky-rupturas",
+                    "awslogs-create-group": "true",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "ecs"
+                },
+                "secretOptions": []
+            },
+            "healthCheck": {
+                "command": [
+                    "curl http://localhost:3000/import/health"
+                ],
+                "interval": 30,
+                "timeout": 5,
+                "retries": 3
+            },
+            "systemControls": []
         }
+    ],
+    "family": "stocky-rupturas",
+    "executionRoleArn": "arn:aws:iam::381492238900:role/ecsTaskExecutionRole",
+    "networkMode": "bridge",
+    "revision": 16,
+    "volumes": [],
+    "status": "ACTIVE",
+    "requiresAttributes": [
+        {
+            "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.24"
+        },
+        {
+            "name": "ecs.capability.execution-role-awslogs"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.ecr-auth"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.21"
+        },
+        {
+            "name": "ecs.capability.container-health-check"
+        },
+        {
+            "name": "ecs.capability.execution-role-ecr-pull"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
+        }
+    ],
+    "placementConstraints": [],
+    "compatibilities": [
+        "EC2"
     ],
     "requiresCompatibilities": [
         "EC2"
     ],
-    "cpu": "256",
-    "memory": "512"
+    "cpu": "1024",
+    "memory": "3072",
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
+    },
+    "registeredAt": "2024-06-27T15:12:22.925Z",
+    "registeredBy": "arn:aws:iam::381492238900:user/stocky-matheus",
+    "tags": []
 }
