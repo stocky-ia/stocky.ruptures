@@ -17,7 +17,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         type: 'mongodb',
-        url: configService.get<string>('MONGODB_URI'),
+        url: "mongodb+srv://denis:010203@stocky-rupturas.vytqmpc.mongodb.net/ruptures?retryWrites=true&w=majority",
         entities: [__dirname + '/**/*.entity.{js,ts}'],
         synchronize: true,
       }),
@@ -26,7 +26,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
-        uri: configService.get<string>('MONGODB_URI'),
+        uri: "mongodb+srv://denis:010203@stocky-rupturas.vytqmpc.mongodb.net/ruptures?retryWrites=true&w=majority",
       }),
       inject: [ConfigService],
     }),
