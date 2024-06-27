@@ -3,10 +3,10 @@ services:
     build:
       context: .
       args:
-        MONGODB_URI=${MONGODB_URI}
-        AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-        AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-        AWS_REGION=${AWS_REGION}
+        MONGODB_URI: ${MONGODB_URI}
+        AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+        AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+        AWS_REGION: ${AWS_REGION}
     ports:
       - '3000:3000'
     environment:
