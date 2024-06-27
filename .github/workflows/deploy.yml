@@ -17,6 +17,11 @@ jobs:
       uses: webfactory/ssh-agent@v0.5.3
       with:
         ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+    
+    - name: Create app directory on EC2
+      run: |
+          ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_HOST }} "mkdir -p ~/app"
+  
 
     - name: Copy files to EC2
       run: |
