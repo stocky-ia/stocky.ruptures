@@ -16,7 +16,7 @@ jobs:
     - name: Set up SSH
       uses: webfactory/ssh-agent@v0.5.3
       with:
-        ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
     - name: Create app directory on EC2
       run: |
@@ -27,9 +27,8 @@ jobs:
         echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" > .env
         echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> .env
         echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
-        echo "AWS_REGION=${{ secrets.AWS_REGION }}" > .env
-        echo "AWS_S3_BUCKET_NAME=${{ secrets.AWS_S3_BUCKET_NAME }}" >> .env
-        
+        echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> .env
+
     - name: Copy files to EC2
       run: |
         scp -o StrictHostKeyChecking=no -r ./* ec2-user@${{ secrets.EC2_HOST }}:~/app
@@ -38,7 +37,9 @@ jobs:
       run: |
         ssh -o StrictHostKeyChecking=no -t ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
           sudo yum update -y
-          sudo yum install -y python3-pip python3-devel
+          sudo yum install -y docker python3-pip python3-devel
+          sudo systemctl start docker
+          sudo systemctl enable docker
           sudo ln -s /usr/lib64/libcrypt.so.1 /lib/libcrypt.so.1 || true
         EOF
 
