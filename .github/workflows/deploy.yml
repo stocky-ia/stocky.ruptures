@@ -17,19 +17,26 @@ jobs:
       uses: webfactory/ssh-agent@v0.5.3
       with:
         ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
-    
+
     - name: Create app directory on EC2
       run: |
-          ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_HOST }} "mkdir -p ~/app"
-  
+        ssh -o StrictHostKeyChecking=no -t ec2-user@${{ secrets.EC2_HOST }} "mkdir -p ~/app"
 
     - name: Copy files to EC2
       run: |
         scp -o StrictHostKeyChecking=no -r ./* ec2-user@${{ secrets.EC2_HOST }}:~/app
 
+    - name: Install Docker Compose on EC2
+      run: |
+        ssh -o StrictHostKeyChecking=no -t ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
+          sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+          sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+        EOF
+
     - name: SSH into EC2 and run Docker commands
       run: |
-        ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
+        ssh -o StrictHostKeyChecking=no -t ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
           cd ~/app
           docker-compose down
           docker-compose up -d --build
