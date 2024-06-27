@@ -43,6 +43,8 @@ jobs:
           sudo systemctl start docker
           sudo systemctl enable docker
           sudo ln -s /usr/lib64/libcrypt.so.1 /lib/libcrypt.so.1 || true
+          sudo usermod -aG docker ec2-user
+          sudo chmod 666 /var/run/docker.sock
         EOF
 
     - name: Install Docker Compose on EC2
