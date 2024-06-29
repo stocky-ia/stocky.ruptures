@@ -22,7 +22,9 @@ jobs:
       run: npm install
 
     - name: Run tests
-      run: npm test
+      run: | 
+        npm install
+        npm test
 
     - name: Set up SSH
       uses: webfactory/ssh-agent@v0.5.3
