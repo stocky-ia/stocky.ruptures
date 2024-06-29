@@ -13,6 +13,12 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run tests
+      run: npm test
+
     - name: Set up SSH
       uses: webfactory/ssh-agent@v0.5.3
       with:
