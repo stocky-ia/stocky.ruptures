@@ -39,7 +39,7 @@ jobs:
     - name: Copy files to EC2
       run: |
         ls -la
-        scp -o StrictHostKeyChecking=no -r ./* ec2-user@${{ secrets.EC2_HOST }}:~/app
+        rsync -avz --exclude 'node_modules/' --exclude '.env' -e "ssh -o StrictHostKeyChecking=no" ./ ec2-user@${{ secrets.EC2_HOST }}:~/app
         scp -o StrictHostKeyChecking=no .env ec2-user@${{ secrets.EC2_HOST }}:~/app
 
     - name: Install dependencies on EC2
