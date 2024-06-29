@@ -10,11 +10,6 @@ services:
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
       - AWS_REGION=${AWS_REGION}
       - AWS_S3_BUCKET_NAME=${AWS_S3_BUCKET_NAME}
-    depends_on:
-      - mongo
     volumes:
       - .:/app
     command: npm run start:dev
-
-volumes:
-  mongo-data:
